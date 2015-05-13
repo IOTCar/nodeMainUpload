@@ -13,7 +13,8 @@ var multer = require('multer');
 //about parser 
 var bodyParser =require('body-parser');
 var cookieParser = require('cookie-parser')
-
+//Use area
+app.use(express.static(path.join(__dirname, '/')));
 //video parser
 app.use(multer({ dest: './uploads/',
 	onFileUploadComplete: function (file, req, res) {
@@ -36,7 +37,6 @@ app.use(multer({ dest: './uploads/',
 }));
 
 //Use area
-app.use(express.static(path.join(__dirname, '/')));
 app.use(cookieParser());
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
