@@ -17,10 +17,18 @@ var cookieParser = require('cookie-parser')
 //video parser
 app.use(multer({ dest: './uploads/',
 	onFileUploadComplete: function (file, req, res) {
+		var json={"title":"test"};
   		console.log(file.fieldname + ' uploaded to  ' + file.path);
+		
+		//return to android side
 		res.json({'response':"OK"});
-		io.emit('foo',{content:'hey boy'});
+		
+		//send to client side
+		json.filePath=file.path;
+		io.emit('foo',json);
 	},
+	
+	//upload progress
 	onFileUploadData: function (file, data, req, res) {
  		 console.log(data.length + ' of ' + file.fieldname + ' arrived')
 	}
@@ -58,7 +66,7 @@ router.post('/myaction',function  (req,res) {
 });
 
 router.post('/upload', function(req, res) {
-	console.log(req.files);
+	//console.log(req.files);
 	
 });
 

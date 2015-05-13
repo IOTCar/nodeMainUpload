@@ -7,7 +7,8 @@
 	<script>
 	  var socket = io.connect('http://163.13.127.133:3000');
 	  socket.on('foo', function (msg) {
-	    alert('Sucessful upload!');
+		var path=msg.filePath;
+		alert(msg.filePath);
 	  });
 	  
 	</script>
