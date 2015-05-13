@@ -54,6 +54,10 @@ router.get('/',function  (req,res) {
 	res.sendFile(__dirname + '/public/index.html');
 });
 
+router.get('/about.html',function(req,res){
+	res.sendFile(__dirname + '/public/about.html');
+});
+
 
 router.get('/form',function  (req,res) {
 	res.sendFile(__dirname + '/public/form.html');
