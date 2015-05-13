@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="stylesheet" href="http://cdn.jtsage.com/datebox/dev/jqm-datebox-dev.css" />
+    <!-- NOTE: Script load order is significant! -->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/external/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="http://dev.jtsage.com/dboxdev/js/doc.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/dev/jqm-datebox-dev.core.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/dev/jqm-datebox-dev.mode.calbox.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/dev/jqm-datebox-dev.mode.datebox.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/dev/jqm-datebox-dev.mode.flipbox.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/dev/jqm-datebox-dev.mode.slidebox.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/dev/jqm-datebox-dev.mode.customflip.js"></script>
+    <script type="text/javascript" src="http://cdn.jtsage.com/datebox/i18n/jqm-datebox.lang.utf8.js"></script>
+
+<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+<title>Index Site</title>
+
+
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAG_4i2swR3KOd-nGYrlrt8RTkyS8SRe_kYPTAbwTumvAqao01PRRUcCtCzTBnNH2kRURGR8RhQQoZ3w"
+      type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+var myMap;
+var myMarker;
+var lat;
+  var lng;
+function load() {
+  
+  if (GBrowserIsCompatible()) {
+    myMap = new GMap2(document.getElementById("my_map"));
+    var myLatLng = new GLatLng(25.04763902653048, 121.51715755462646);
+    myMap.setCenter(myLatLng, 15);
+    myMap.addControl(new GLargeMapControl());
+    document.getElementById('inLatLng').value = myLatLng.toString();
+    document.getElementById('inLat').value = myLatLng.lat();
+    document.getElementById('inLng').value = myLatLng.lng();    
+    lat=myLatLng.lat();
+    lng=myLatLng.lng();
+    myMarker = new GMarker( myLatLng );
+    myMap.addOverlay( myMarker );
+    GEvent.addListener(myMap, "click", function( overlay, point ){
+                if(point){
+                  //設定標註座標
+                  myMarker.setLatLng(point);
+                  document.getElementById('inLatLng').value = point.toString();
+                  document.getElementById('inLat').value = point.lat();
+                  
+                  document.getElementById('inLng').value = point.lng();
+                  myLatLng=document.getElementById('inLatLng').value;
+                  lat=myLatLng.lat();
+                  lng=myLatLng.lng();
+                }
+              });
+    
+  }
+}
+function addressGps() {
+  var myGeocoder = new GClientGeocoder();
+  var address = document.getElementById('address').value;
+  myGeocoder.getLatLng(address, function getRequest( point ){
+              if(!point){
+                alert('這個地址 Google 說不知道！');
+              }else{
+                //移動地圖中心點
+                myMap.panTo( point );
+                //設定標註座標
+                myMarker.setLatLng(point);
+                document.getElementById('inLatLng').value = point.toString();
+                document.getElementById('inLat').value = point.lat();
+                document.getElementById('inLng').value = point.lng();
+              }
+            });
+}
+function formatter(obby) {
+  var date = obby.date;
+  $('#out1').val(this.callFormat('%s', date));
+}
+function formatter2(obby) {
+  var date = obby.date;
+  //$('#out1').val(this.callFormat('%s', date));
+}
+//]]>
+</script>
+</head>
+<body onload="load()" onunload="GUnload()">
+    Address︰<input id="address" name="address" type="text" size="40" value="臺北市信義區市府路1號" />
+  <input name="button" type="button" value="Search" onclick="javascript:addressGps();" />
+  <br>
+  LatLng︰<input id="inLatLng" name="inLatLng" type="text" size="40" value="" />
+  <br>
+  <form name="myform" id="myform" action="search_video.php" method="POST" data-ajax="false">
+  
+  Lat:<input id="inLat" name="inLat" type="text" size="20" value="" />
+  <br>
+  Lng︰<input id="inLng" name="inLng" type="text" size="20" value="" />
+  
+  <br><input id="date" name="date" type="text" data-role="datebox" data-options='{"mode":"calbox","closeCallback":"formatter"}' />
+  <br><input id="out1" name="epochDate" type="hidden"/>
+  <br><input name="time" id="time" type="text" data-role="datebox" data-options='{"mode":"timeflipbox","overrideDateFormat":"%s"}' />
+
+  <input type=submit value="寄出">
+  </form>
+  <br>
+  <p>
+  <div id="my_map" style="width: 100%; height: 500px" position="center"></div>
+
+</body>
+</html>
