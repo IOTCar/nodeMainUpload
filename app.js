@@ -62,7 +62,9 @@ router.get('/about.html',function(req,res){
 	res.sendFile(__dirname + '/public/about.html');
 });
 
-
+router.get('/start.html',function(req,res){
+	res.sendFile(__dirname + '/public/start.html');
+});
 router.get('/form',function  (req,res) {
 	res.sendFile(__dirname + '/public/form.html');
 });
