@@ -80,7 +80,11 @@ router.post('/upload', function(req, res) {
 	
 });
 
-
+router.post('/gcm', function(req, res) {
+	console.log(req.body.content);
+	res.json("ok");
+	res.end();
+});
 app.get('/uploads/:file', function (req, res){
     file = req.params.file;
     var dirname = "/home/jinniw43805/Node/file-upload";
