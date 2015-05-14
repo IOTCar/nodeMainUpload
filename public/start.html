@@ -200,9 +200,9 @@
 	var socket = io.connect('http://163.13.127.133:3000');
           socket.on('foo', function (msg) {
                 var path=msg.filePath;
--               alert(msg.filePath);
-+               //alert(msg.filePath);
-+               Videobox.open("https://www.youtube.com/watch?v=7Mk0dHXKyyM","your caption","vidbox 500 1000");
+               alert(msg.filePath);
+               //alert(msg.filePath);
+               Videobox.open("https://www.youtube.com/watch?v=7Mk0dHXKyyM","IOT CAR","vidbox 900 650");
           });
    </script>
 </body>

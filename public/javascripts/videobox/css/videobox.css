@@ -15,7 +15,7 @@ body {margin: 0;}
 }
 
 .lbLoading {
-	background: #fff url(loading.gif) no-repeat center;
+	background: #fff url(public/img/loading.gif) no-repeat center;
 }
 
 #lbImage {
