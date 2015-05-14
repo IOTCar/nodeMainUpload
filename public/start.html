@@ -29,7 +29,7 @@
     <![endif]-->
 
     <!-- google map api -->
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAG_4i2swR3KOd-nGYrlrt8RTkyS8SRe_kYPTAbwTumvAqao01PRRUcCtCzTBnNH2kRURGR8RhQQoZ3w" type="text/javascript"></script>
+    <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;key=ABQIAAAAG_4i2swR3KOd-nGYrlrt8RTkyS8SRe_kYPTAbwTumvAqao01PRRUcCtCzTBnNH2kRURGR8RhQQoZ3w" type="text/javascript"></script>
     
 
     <script type="text/javascript">
@@ -45,8 +45,8 @@
             myMap.setCenter(myLatLng, 15);
             myMap.addControl(new GLargeMapControl());
             //document.getElementById('inLatLng').value = myLatLng.toString();
-            document.getElementById('inLat').value = myLatLng.lat();
-            document.getElementById('inLng').value = myLatLng.lng();    
+            document.getElementById('inLat').value = myLatLng.A;
+            document.getElementById('inLng').value = myLatLng.F;    
             lat=myLatLng.lat();
             lng=myLatLng.lng();
             myMarker = new GMarker( myLatLng );
@@ -55,7 +55,7 @@
                         if(point){
                           //設定標註座標
                           myMarker.setLatLng(point);
-                          document.getElementById('inLatLng').value = point.toString();
+                          //document.getElementById('inLatLng').value = point.toString();
                           document.getElementById('inLat').value = point.lat();
                           
                           document.getElementById('inLng').value = point.lng();
@@ -147,8 +147,8 @@
                     <p><input type="time" name="user_time"placeholder="time" size="20"></p>
                     
             
-                    <p><input type="text" name="inLag" name="inLag" placeholder="lat"size="20"></p>
-                    <p><input type="text" name="inLng" name="inLng"placeholder="lng"size="20"></p>
+                    <p><input type="text" name="inLag" name="inLag" placeholder="lat"size="20" value=""/></p>
+                    <p><input type="text" name="inLng" name="inLng"placeholder="lng"size="20" value=""/></p>
                     <p><input type="text" input id="address" value="臺北市信義區市府路1號" name="address" placeholder="address" size="20"></p>
                     <p>
                     <input name="button" type="button" value="Search" onclick="javascript:addressGps();" />
