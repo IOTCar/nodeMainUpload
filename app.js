@@ -4,11 +4,20 @@ var server = app.listen(3000);
 var path = require('path');
 var io = require('socket.io').listen(server);
 var fs = require('fs');
+var storage = require('node-persist');
 
+//gcm send
+var gcm = require('node-gcm');
+//gcm send
 
+//storage area
+storage.initSync();
+storage.setItem('regid','empty');
 //video 
 
 var multer = require('multer');
+
+
 
 //about parser 
 var bodyParser =require('body-parser');
@@ -69,10 +78,29 @@ router.get('/form',function  (req,res) {
 	res.sendFile(__dirname + '/public/form.html');
 });
 
+//gcm send test
+router.get('/gcm-send',function(req,res){
+	
+	var message = new gcm.Message();
 
+	message.addData('key1', 'msg1');
 
+	var regIds = ['APA91bEQxcmB9cvMtXcT97kVyKASP78qxVflfTNiZL_O1RcMetRanvsmgOM5SxI6WP0zhMopdxTTRl3FamP7cyWkxfrE1iT78F8qkuzM-waWV5l3Y59jSo86ikwntpaLmwuyFkw3f2d9NyjiEqtnMdnMWFreR70s5g'];
+
+	var sender = new gcm.Sender('AIzaSyBqYuUjxzDz9PueW9YnhUJbtoarJEF4sys');
+
+	sender.send(message, regIds, function (err, result) {
+    		if(err) console.error(err);
+    		else    console.log(result);
+	});
+});
+//end test
 router.post('/myaction',function  (req,res) {
-	res.send('You sent the name "' + req.body.name + '".');
+	
+	setTimeout(function() {
+  		//console.log('Foo');
+		io.emit('foo',"test");	
+	}, 5000);
 });
 
 router.post('/upload', function(req, res) {
@@ -82,6 +110,13 @@ router.post('/upload', function(req, res) {
 
 router.post('/gcm', function(req, res) {
 	console.log(req.body.content);
+
+
+	//assign to storage
+	storage.setItem('regid',req.body.content);
+	//assign to storage
+	
+	console.log("storage-regid:"+storage.getItem('regid'));
 	res.json("ok");
 	res.end();
 });
