@@ -27,15 +27,68 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <!-- google map api -->
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAG_4i2swR3KOd-nGYrlrt8RTkyS8SRe_kYPTAbwTumvAqao01PRRUcCtCzTBnNH2kRURGR8RhQQoZ3w" type="text/javascript"></script>
+    
+
     <script type="text/javascript">
-        function formatter(obby) {
-          var date = obby.date;
-          $('#out1').val(this.callFormat('%s', date));
+        var myMap;
+        var myMarker;
+        var lat;
+          var lng;
+        function load() {
+          
+          if (GBrowserIsCompatible()) {
+            myMap = new GMap2(document.getElementById("my_map"));
+            var myLatLng = new GLatLng(25.04763902653048, 121.51715755462646);
+            myMap.setCenter(myLatLng, 15);
+            myMap.addControl(new GLargeMapControl());
+            //document.getElementById('inLatLng').value = myLatLng.toString();
+            document.getElementById('inLat').value = myLatLng.lat();
+            document.getElementById('inLng').value = myLatLng.lng();    
+            lat=myLatLng.lat();
+            lng=myLatLng.lng();
+            myMarker = new GMarker( myLatLng );
+            myMap.addOverlay( myMarker );
+            GEvent.addListener(myMap, "click", function( overlay, point ){
+                        if(point){
+                          //設定標註座標
+                          myMarker.setLatLng(point);
+                          document.getElementById('inLatLng').value = point.toString();
+                          document.getElementById('inLat').value = point.lat();
+                          
+                          document.getElementById('inLng').value = point.lng();
+                          myLatLng=document.getElementById('inLatLng').value;
+                          lat=myLatLng.lat();
+                          lng=myLatLng.lng();
+                        }
+                      });
+            
+          }
         }
+        function addressGps() {
+          var myGeocoder = new GClientGeocoder();
+          var address = document.getElementById('address').value;
+          myGeocoder.getLatLng(address, function getRequest( point ){
+                      if(!point){
+                        alert('這個地址 Google 說不知道！');
+                      }else{
+                        //移動地圖中心點
+                        myMap.panTo( point );
+                        //設定標註座標
+                        myMarker.setLatLng(point);
+                        document.getElementById('inLatLng').value = point.toString();
+                        document.getElementById('inLat').value = point.lat();
+                        document.getElementById('inLng').value = point.lng();
+                      }
+                    });
+        }
+
     </script>
 </head>
 
-<body>
+<body onload="load()" onunload="GUnload()">
 
     <div class="brand">I O T - C A R</div>
     <div class="address-bar">行車記錄器-全民英雄</div>
@@ -86,20 +139,20 @@
                     <hr>
                 </div>
                 <div class="col-md-8">
-                    <!-- Embedded Google Map using an iframe - to select your location find it on Google maps and paste the link as the iframe src. If you want to use the Google Maps API instead then have at it! -->
-                    <iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?hl=en&amp;ie=UTF8&amp;ll=37.0625,-95.677068&amp;spn=56.506174,79.013672&amp;t=m&amp;z=4&amp;output=embed"></iframe>
+                      <div id="my_map" style="width: 100%; height: 100%" position="center"></div>
                 </div>
                 <div class="col-md-4">
                     <form action="POST">
                     <p><input type="date" name="date" placeholder="date" size="20"></p>
-                    <p><input type="time" name="user_time"placeholder="time"size="20"></p>
-                    <p><input type="submit" placeholder="search"size="20"></p>
-                    </form>
-                    <form action="POST">
-                    <p><input type="" name="lat" placeholder="lat"size="20"></p>
-                    <p><input type="text" name="lng" placeholder="lng"size="20"></p>
-                    <p><input type="text" name="address" placeholder="address"size="20"></p>
-                    <p><input type="submit"placeholder="search"size="20"></p>
+                    <p><input type="time" name="user_time"placeholder="time" size="20"></p>
+                    
+            
+                    <p><input type="text" name="inLag" name="inLag" placeholder="lat"size="20"></p>
+                    <p><input type="text" name="inLng" name="inLng"placeholder="lng"size="20"></p>
+                    <p><input type="text" input id="address" value="臺北市信義區市府路1號" name="address" placeholder="address" size="20"></p>
+                    <p>
+                    <input name="button" type="button" value="Search" onclick="javascript:addressGps();" />
+                     <input type="submit"placeholder="search"size="20"></p>
                     </form>
                 </div>
                 <div class="clearfix"></div>
